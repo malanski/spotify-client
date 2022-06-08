@@ -1,7 +1,7 @@
 const APIController = (function() {
     
-    const clientId = 'ADD YOUR CLIENT ID';
-    const clientSecret = 'ADD YOUR CLIENT SECRET';
+    const clientId = '38c5b6a8d29c45649ef0183b0fc9a7ba';
+    const clientSecret = '328ae93c4a8c478d81cb5749a99ef5ef';
 
     // private methods
     const _getToken = async () => {
@@ -9,7 +9,7 @@ const APIController = (function() {
         const result = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded', 
+                'Content-Type'  : 'application/x-www-form-urlencoded', 
                 'Authorization' : 'Basic ' + btoa(clientId + ':' + clientSecret)
             },
             body: 'grant_type=client_credentials'
@@ -34,7 +34,7 @@ const APIController = (function() {
 
         const limit = 10;
         
-        const result = await fetch(`https://api.spotify.com/v1/browse/categories/${genreId}/playlists?limit=${limit}`, {
+            const result = await fetch(`https://api.spotify.com/v1/browse/categories/${genreId}/playlists?limit=${limit}`, {
             method: 'GET',
             headers: { 'Authorization' : 'Bearer ' + token}
         });
@@ -48,8 +48,10 @@ const APIController = (function() {
         const limit = 10;
 
         const result = await fetch(`${tracksEndPoint}?limit=${limit}`, {
+
             method: 'GET',
             headers: { 'Authorization' : 'Bearer ' + token}
+            
         });
 
         const data = await result.json();
@@ -59,6 +61,7 @@ const APIController = (function() {
     const _getTrack = async (token, trackEndPoint) => {
 
         const result = await fetch(`${trackEndPoint}`, {
+
             method: 'GET',
             headers: { 'Authorization' : 'Bearer ' + token}
         });
@@ -92,12 +95,12 @@ const UIController = (function() {
 
     //object to hold references to html selectors
     const DOMElements = {
-        selectGenre: '#select_genre',
+        selectGenre   : '#select_genre',
         selectPlaylist: '#select_playlist',
-        buttonSubmit: '#btn_submit',
-        divSongDetail: '#song-detail',
-        hfToken: '#hidden_token',
-        divSonglist: '.song-list'
+        buttonSubmit  : '#btn_submit',
+        divSongDetail : '#song-detail',
+        hfToken       : '#hidden_token',
+        divSonglist   : '.song-list'
     }
 
     //public methods
@@ -106,10 +109,10 @@ const UIController = (function() {
         //method to get input fields
         inputField() {
             return {
-                genre: document.querySelector(DOMElements.selectGenre),
-                playlist: document.querySelector(DOMElements.selectPlaylist),
-                tracks: document.querySelector(DOMElements.divSonglist),
-                submit: document.querySelector(DOMElements.buttonSubmit),
+                genre     : document.querySelector(DOMElements.selectGenre),
+                playlist  : document.querySelector(DOMElements.selectPlaylist),
+                tracks    : document.querySelector(DOMElements.divSonglist),
+                submit    : document.querySelector(DOMElements.buttonSubmit),
                 songDetail: document.querySelector(DOMElements.divSongDetail)
             }
         },
@@ -139,17 +142,17 @@ const UIController = (function() {
             detailDiv.innerHTML = '';
 
             const html = 
-            `
-            <div class="row col-sm-12 px-0">
-                <img src="${img}" alt="">        
-            </div>
-            <div class="row col-sm-12 px-0">
-                <label for="Genre" class="form-label col-sm-12">${title}:</label>
-            </div>
-            <div class="row col-sm-12 px-0">
-                <label for="artist" class="form-label col-sm-12">By ${artist}:</label>
-            </div> 
-            `;
+                `
+                    <div class="row col-sm-12 px-0">
+                        <img class="album-cover" src="${img}" alt="">        
+                    </div>
+                    <div class="row col-sm-12 px-0">
+                        <label for="Genre" class="form-label col-sm-12">${title}</label>
+                    </div>
+                    <div class="row col-sm-12 px-0">
+                        <label for="artist" class="form-label col-sm-12">By: ${artist}</label>
+                    </div> 
+                `;
 
             detailDiv.insertAdjacentHTML('beforeend', html)
         },
@@ -166,12 +169,10 @@ const UIController = (function() {
         resetPlaylist() {
             this.inputField().playlist.innerHTML = '';
             this.resetTracks();
-        },
-        
+        },        
         storeToken(value) {
             document.querySelector(DOMElements.hfToken).value = value;
         },
-
         getStoredToken() {
             return {
                 token: document.querySelector(DOMElements.hfToken).value
